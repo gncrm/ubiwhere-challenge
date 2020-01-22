@@ -33,7 +33,8 @@ class OccurrenceList(APIView):
 
 	def get(self, request, format = None):
 		db = DbManager()
-		pass
+		res = db.getOccurrenceList()
+		return Response(OccurrenceSerializer(res, many = True).data)
 
 	def post(self, request, format = None):
 		db = DbManager()

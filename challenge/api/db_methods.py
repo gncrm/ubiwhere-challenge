@@ -60,6 +60,9 @@ class DbManager:
 		except User.DoesNotExist:
 			return -1
 
+	def getOccurrenceList(self):
+		return Occurrence.objects.all()
+
 	def getOccurrenceDetails(self, pk):
 		try:
 			occ = Occurrence.objects.get(occ_id = pk)
