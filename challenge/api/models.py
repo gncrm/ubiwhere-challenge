@@ -13,6 +13,6 @@ class Occurrence(models.Model):
 	longitude = models.DecimalField(max_digits = 14, decimal_places = 10)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	creation_date = models.DateTimeField()
-	update_date = models.DateTimeField()
+	update_date = models.DateTimeField(blank = True, null = True)
 	status = models.CharField(max_length = 20)
 	category = models.CharField(max_length = 20)

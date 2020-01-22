@@ -49,3 +49,24 @@ class OccurrenceList(APIView):
 			return JsonResponse({}, status = 200)
 		else:
 			return Response(OccurrenceSerializer(res).data)
+
+class OccurrenceDetail(APIView):
+
+	def get(self, request, pk, format = None):
+		db = DbManager()
+		res = db.getOccurrenceDetails(pk)
+		if res == -1:
+			return JsonResponse({}, status = 200)
+		else:
+			return Response(OccurrenceSerializer(res).data)
+
+	def post(self, request, pk, format = None):
+		db = DbManager()
+		if 'user_token' in request.query_params:
+			res = db.changeOccurrenceStatus(pk, request.query_params['user_token'])
+			if res == None or res == -1:
+				return JsonResponse({}, status = 200)
+			else:
+				return Response(OccurrenceSerializer(res).data)
+		else:
+			return JsonResponse({}, status = 200)

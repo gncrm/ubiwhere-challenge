@@ -59,3 +59,34 @@ class DbManager:
 				return None
 		except User.DoesNotExist:
 			return -1
+
+	def getOccurrenceDetails(self, pk):
+		try:
+			occ = Occurrence.objects.get(occ_id = pk)
+			return occ
+		except Occurrence.DoesNotExist:
+			return -1
+
+	#Fix segundo return None - erro diferente
+	def changeOccurrenceStatus(self, pk, user_token):
+		try:
+			user = User.objects.get(api_token = user_token)
+			if user.is_admin == False:
+				return -1
+			try:
+				occ = Occurrence.objects.get(occ_id = pk)
+				if occ.status == 'unvalidated':
+					occ.status = 'validated'
+					occ.update_date = timezone.now()
+					occ.save()
+				elif occ.status == 'validated':
+					occ.status = 'solved'
+					occ.update_date = timezone.now()
+					occ.save()
+				else:
+					return None
+				return occ
+			except Occurrence.DoesNotExist:
+				return None
+		except User.DoesNotExist:
+			return -1
