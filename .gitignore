@@ -1,3 +1,3 @@
 challenge/api/migrations/*
 challenge/challenge/__pycache__/*
-
+challenge/db.sqlite3
