@@ -1,2 +1,3 @@
 challenge/api/migrations/*
-challenge/challenge/__pycache/
+challenge/challenge/__pycache__/*
+
