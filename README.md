@@ -3,6 +3,8 @@
 A REST API for managing occurrences in an urban environment, implemented using Django with a SQLite database, for Ubiwhere's challenge.
 The description of the endpoints of the API is available at its root (api/) once it is running.
 
+Note: The server time is set to be according to the UTC timezone.
+
 **Running the API with Docker**
 
 To run the API using Docker simply use the following command.
