@@ -23,7 +23,7 @@ class DbManager:
 	def registerUser(self, username):
 		try:
 			user = User.objects.get(pk = username)
-			return -1
+			return 409
 		except User.DoesNotExist:
 			u = User(username = username, is_admin = False)
 			u.api_token = secrets.token_hex(16)
@@ -33,7 +33,7 @@ class DbManager:
 	def registerAdmin(self, username, pw):
 		try:
 			user = User.objects.get(pk = username)
-			return -1
+			return 409
 		except User.DoesNotExist:
 			if pw == self.admin_password:
 				u = User(username = username, is_admin = True)
@@ -41,9 +41,7 @@ class DbManager:
 				u.save()
 				return u
 			else:
-				return -2
-
-	#occ_id, description, latitude, longitude, user, creation_date, update_date, status, category
+				return 400
 
 	def addOccurrence(self, description, latitude, longitude, user_token, category):
 		try:
@@ -56,26 +54,25 @@ class DbManager:
 				occ.save()
 				return occ
 			else:
-				return None
+				return 400
 		except User.DoesNotExist:
-			return -1
+			return 401
 
 	def getOccurrenceList(self):
-		return Occurrence.objects.all()
+		return Occurrence.objects.all().order_by('-creation_date')
 
 	def getOccurrenceDetails(self, pk):
 		try:
 			occ = Occurrence.objects.get(occ_id = pk)
 			return occ
 		except Occurrence.DoesNotExist:
-			return -1
+			return 404
 
-	#Fix segundo return None - erro diferente
 	def changeOccurrenceStatus(self, pk, user_token):
 		try:
 			user = User.objects.get(api_token = user_token)
 			if user.is_admin == False:
-				return -1
+				return 401
 			try:
 				occ = Occurrence.objects.get(occ_id = pk)
 				if occ.status == 'unvalidated':
@@ -87,9 +84,24 @@ class DbManager:
 					occ.update_date = timezone.now()
 					occ.save()
 				else:
-					return None
+					return 400
 				return occ
 			except Occurrence.DoesNotExist:
-				return None
+				return 404
 		except User.DoesNotExist:
-			return -1
+			return 401
+
+	def filterOccurrencesByUser(self, username):
+		return Occurrence.objects.filter(user = username).order_by('-creation_date')
+
+	def filterOccurrencesByCategory(self, categ):
+		if self.checkCategory(categ):
+			return Occurrence.objects.filter(category = categ.upper()).order_by('-creation_date')
+		else:
+			return 400
+
+	def filterOccurrencesByLocation(self, latitude, longitude, radius):
+		if self.checkCoordinates(latitude, longitude) and radius >= 0:
+			pass
+		else:
+			return 400

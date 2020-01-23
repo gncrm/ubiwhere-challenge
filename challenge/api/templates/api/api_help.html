@@ -1,0 +1,52 @@
+<html>
+<body>
+<h2>Occurrence API Help</h2>
+<p>
+API for managing occurrences in a urban environment. The responses are in the JSON format.<br>
+The available URLs and methods are:<p>
+
+<h3>api/</h3>
+<p>
+Displays the help menu of this API
+<p>
+
+<h3>api/user-registration/</h3>
+<p>
+<b>POST</b> - Registers a new user in the API. Parameters:<br>
+	<ul>
+		<li>username: The desired username</li>
+		<li>admin_pw (OPTIONAL): Code necessary to register admin accounts</li> 
+	</ul>
+<p>
+
+<h3>api/occurrences/</h3>
+<p>
+<b>GET</b> - Returns the list of ocurrences (no parameters) or a filtered list of occurrences if the request has search parameters:<br>
+	<ul>
+		<li>latitude: Latitude</li>
+		<li>longitude: Longitude</li>
+		<li>radius: Maximum distance to the point sent in the request</li>
+		<li>username: Username of the user that posted the occurrences</li>
+		<li>category: Category of the occurrences to be shown. Possible categories: CONSTRUCTION, SPECIAL_EVENT, INCIDENT, WEATHER_CONDITION, ROAD_CONDITION</li>
+	</ul>
+<b>POST</b> - Adds a new occurrence. Parameters:<br>
+	<ul>
+		<li>description: Description of the occurrence</li>
+		<li>latitude: Latitude of the occurrence</li>
+		<li>longitude: Longitude of the occurrence</li>
+		<li>user_token: User API token</li>
+		<li>category: Category of the occurrence. Possible categories: CONSTRUCTION, SPECIAL_EVENT, INCIDENT, WEATHER_CONDITION, ROAD_CONDITION</li>
+	</ul>
+<p>
+
+<h3>api/occurrences/{id}/</h3>
+<p>
+<b>GET</b> - Returns the ocurrences with the ID in the URL (no parameters)<br>
+<b>PUT</b> - Updates the status of the occurrence with the ID in the URL (ADMIN only). Parameters:<br>
+	<ul>
+		<li>user_token: User API token (must be an admin to use this functionalty)</li>
+	</ul>
+<p>
+
+</body>
+</html>
