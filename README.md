@@ -3,7 +3,7 @@
 A REST API for managing occurrences in an urban environment, implemented using Django with a SQLite database, for Ubiwhere's challenge.
 The description of the endpoints of the API is available at its root (api/) once it is running.
 
-##Run the API with Docker
+**Running the API with Docker**
 
 To run the API using Docker simply use the following command.
 
@@ -13,7 +13,7 @@ docker-compose up
 
 The API will then be ready to receive requests.
 
-##Run the API using the command line
+**Running the API using the command line**
 
 To run the API using the command line we need to first install the necessary Python packages using these commands.
 
