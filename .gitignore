@@ -1,4 +1,5 @@
 challenge/api/migrations/*
+!challenge/api/migrations/__init__.py
 challenge/challenge/__pycache__/*
 challenge/api/__pycache__/*
 challenge/db.sqlite3
