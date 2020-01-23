@@ -1,6 +1,7 @@
 from api.models import Occurrence, User
 import secrets
 from django.utils import timezone
+from math import sin, cos, sqrt, atan2, radians
 
 class DbManager:
 
@@ -32,6 +33,20 @@ class DbManager:
 		if float(longitude) < -180.0 or float(longitude) > 180.0:
 			return 0
 		return 1
+
+	'''
+	This function calculates and returns the distance between two locations passed as arguments
+	'''
+	def calculateDistance(self, latitude1, longitude1, latitude2, longitude2):
+		latitude1 = radians(float(latitude1))
+		latitude2 = radians(float(latitude2))
+		longitude1 = radians(float(longitude1))
+		longitude2 = radians(float(longitude2))
+
+		aux = sin((latitude2 - latitude1) / 2)**2 + cos(latitude1) * cos(latitude2) * sin((longitude2 - longitude1) / 2)**2
+		aux2 = 2 * atan2(sqrt(aux), sqrt(1 - aux))
+		dist = 6373.0 * aux2
+		return dist
 
 	'''
 	This function registers non admin users so they can use the API. It receives the desired username
@@ -154,7 +169,13 @@ class DbManager:
 	If the location is invalid or the radius is negative, the proper error code is returned
 	'''
 	def filterOccurrencesByLocation(self, latitude, longitude, radius):
-		if self.checkCoordinates(latitude, longitude) and radius >= 0:
-			pass
+		try:
+			float(radius)
+		except:
+			return 400
+		if self.checkCoordinates(latitude, longitude) and float(radius) >= 0:
+			occ_list = Occurrence.objects.all().order_by('-creation_date')
+			out = [occ for occ in occ_list if self.calculateDistance(latitude, longitude, occ.latitude, occ.longitude) <= float(radius)]
+			return out
 		else:
 			return 400
