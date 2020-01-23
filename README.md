@@ -33,7 +33,7 @@ python3 manage.py migrate
 If the goal is to run the implemented set of tests, then the command to use is the following.
 
 ```
-TODO
+python3 manage.py test api
 ```
 
 If the goal is to run the API, then the next command will start the server.
